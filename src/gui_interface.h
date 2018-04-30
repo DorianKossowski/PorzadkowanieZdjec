@@ -1,7 +1,8 @@
 #pragma once
 #include "gui.h"
+#include "folder_hierarchy.h"
 
-class gui_interface : public MyFrame
+class gui_interface : public MyFrame, public folder_hierarchy
 {
 public:
 	gui_interface(wxWindow* parent) : MyFrame(parent) {}
@@ -16,7 +17,7 @@ public:
 	virtual void UpdateThumbnailSize(wxCommandEvent& event);
 
 	// Po wcisnieciu buttona organizePhotos pokawia sie okno do wyboru katalogu do ktorego bedziemy zapisywac katalog
-	// z uporzadkowanymi zdjêciami. Pozniej startujemy z porzadkowaniem zdjec. Jesli uzytkownik nie ustawil stopnia kompesji
+	// z uporzadkowanymi zdjeciami. Pozniej startujemy z porzadkowaniem zdjec. Jesli uzytkownik nie ustawil stopnia kompesji
 	// pojawia sie ostrzezenie. Na panelu photosPanel bedzie mozna zobaczyc porzadkowane zdjecia. 
 	// Caly czas aktualizowana bedzie wartosc wxGauge* showProgress gdzie bedzie pokazane jaki procent
 	// jaki procent zdjec uporzadkowalismy a zmienna tekstowa percentageProgress bedzie wypisywac ta wartosc 
