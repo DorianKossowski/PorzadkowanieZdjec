@@ -23,7 +23,7 @@ protected:
 	// sciezka folderu docelowego
 	std::string newFolder;
 	// dopuszczalne formaty zdjec
-	std::vector<std::string> validExtensions{ ".jpg", ".jpeg", ".jpe", "jfif", ".bmp" };
+	std::vector<std::string> validExtensions{ ".jpg", ".jpeg", ".jpe", ".jfif", ".bmp", ".JPG", ".JPEG" };
 	// ilosc wszyskich zdjec, ilosc juz obrobionych zdjec
 	int photosAmount, statusCounter;
 	// sciezki do zdjec w aktualnym folderze, potrzebne do stykowek
