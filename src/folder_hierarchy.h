@@ -3,6 +3,9 @@
 #include <experimental/filesystem>
 #include <iostream>
 
+// for handling image
+#include <wx/image.h>
+
 class folder_hierarchy
 {
 public:
@@ -16,6 +19,9 @@ public:
 	void createContactSheet(const std::string& place);
 	// tworzy kopie hierarchii folderow w lokalizacji docelowej
 	void copyHierarchy();
+
+	static int max_width;
+	static int max_height;
 
 protected:
 	// sciezka do folderu bazowego

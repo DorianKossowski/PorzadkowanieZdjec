@@ -1,6 +1,7 @@
 #include "folder_hierarchy.h"
-// for handling image
-#include <wx/image.h>
+
+int folder_hierarchy::max_width = 0;
+int folder_hierarchy::max_height = 0;
 
 namespace fs = std::experimental::filesystem;
 
@@ -27,10 +28,7 @@ void folder_hierarchy::imageHandler(const std::string& source, const std::string
 	std::cout << "TO: " << destination << std::endl;
 	/*
 		DZIALANIA NA OBRAZIE
-		narazie skaluje do max 64 px
 	*/
-	// handlery
-	wxInitAllImageHandlers();
 
 	// obraz
 	wxImage image;
@@ -39,13 +37,39 @@ void folder_hierarchy::imageHandler(const std::string& source, const std::string
 		if (image.GetHeight() > image.GetWidth()) {
 			// wspolczynnik 
 			double ratio = static_cast<double> (image.GetWidth()) / static_cast<double> (image.GetHeight());
-			image.Rescale(ratio * 64, 64);
+			// najpierw sprawdzam czy mam wgl wymiary
+			if (max_width > 0 && max_height > 0) {
+				// nie wiem jak to opisac XD
+				// jak mam oba to skaluje do mniejszego
+				if (max_width > max_height * ratio)
+					image.Rescale(ratio * max_height, max_height);
+				else
+					image.Rescale(max_width, max_width / ratio);
+			}
+			// inaczej znaczy ze czegos nie mam
+			else if (max_width > 0)
+				image.Rescale(max_width, max_width / ratio);
+			else if (max_height > 0)
+				image.Rescale(max_height * ratio, max_height);
 		}
 		// obraz jest horyzontalny
 		else {
 			// wspolczynnik
 			double ratio = static_cast<double> (image.GetHeight()) / static_cast<double> (image.GetWidth());
-			image.Rescale(64, ratio * 64);
+			// najpierw sprawdzam czy mam wgl wymiary
+			if (max_width > 0 && max_height > 0) {
+				// nie wiem jak to opisac XD
+				// jak mam oba to skaluje do mniejszego
+				if (max_height > max_width * ratio)
+					image.Rescale(max_width, max_width * ratio);
+				else
+					image.Rescale(max_height / ratio, max_height);
+			}
+			// inaczej znaczy ze czegos nie mam
+			else if (max_width > 0)
+				image.Rescale(max_width, max_width * ratio);
+			else if (max_height > 0)
+				image.Rescale(max_height / ratio, max_height);
 		}
 	}
 	try
@@ -73,21 +97,25 @@ void folder_hierarchy::createContactSheet(const std::string& place)
 
 	// rozmiar komorki
 	int cell_size = 128;
+	// numer stykowki
+	int contact_sheet_number = 1;
 
 	wxImage image(5 * cell_size, 8 * cell_size);
 	unsigned char* image_data = image.GetData();
 	wxImage image_tmp;
+	int i;
 
 	std::cout << "STYKOWKA" << std::endl;
-	for (int i = 0; i < photosInFolder.size(); i++) {
-		// i >= 40 bo jest 5 x 8
-		// jakby bylo wiecej zdjec to bedzie tylko jedna stykowka z 40 zdjeciami
-		if (i >= 40)
-			break;
+	for (int j = 0; j < photosInFolder.size(); j++) {
+		i = j % 40;
 
-		std::cout << photosInFolder[i] << std::endl; // wypisuje sciezki do kolejnych zdjec
-		image_tmp.LoadFile(photosInFolder[i]);
+		// wypisuje sciezki do kolejnych zdjec
+		//std::cout << photosInFolder[i] << std::endl;
 
+		// wczytuje po kolei zdjecia
+		image_tmp.LoadFile(photosInFolder[j]);
+
+		// sprawdzam wymiary
 		if (image_tmp.GetHeight() > image_tmp.GetWidth()) {
 			double ratio = static_cast<double> (image_tmp.GetWidth()) / static_cast<double> (image_tmp.GetHeight());
 			image_tmp.Rescale(ratio * cell_size, cell_size);
@@ -115,12 +143,24 @@ void folder_hierarchy::createContactSheet(const std::string& place)
 				// B
 				image_data[row * cell_size * cell_size * 5 * 3 + (i % 5) * cell_size * 3 + y * cell_size * 3 * 5 + x * 3 + 2] = image_data_tmp[cell_size * y * 3 + x * 3 + 2];
 			}
+
+		// jesli przetworzyl juz 40 obrazow to zapisze i jak cos to zapisze nastepne w inne miejsce
+		if (i == 39) {
+			image.SaveFile(place + "_stykowka" + std::to_string(contact_sheet_number) + ".jpg");
+			contact_sheet_number++;
+			image.Clear();
+		}
 	}
-	image.SaveFile(place + "_stykowka.jpg");
+	// jesli ma pelne stykowki zeby nie zapisal 2 razy
+	if (i != 39)
+		image.SaveFile(place + "_stykowka" + std::to_string(contact_sheet_number) + ".jpg");
 }
 
 void folder_hierarchy::copyHierarchy()
 {
+	// handlery
+	wxInitAllImageHandlers();
+
 	for (auto& p : fs::directory_iterator(baseFolder))
 	{
 		if (!fs::is_directory(p) && in_array(p.path().filename().extension().string()))

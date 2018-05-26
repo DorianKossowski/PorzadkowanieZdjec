@@ -14,6 +14,7 @@ void gui_interface::SelectDirectoryToImport(wxCommandEvent& event)
 	}
 }
 
+// ustawia flage
 void gui_interface::ModeSelect(wxCommandEvent& event)
 {
 	if (modeChoice->GetSelection() == 0)
@@ -22,11 +23,14 @@ void gui_interface::ModeSelect(wxCommandEvent& event)
 		automaticMode = false;
 }
 
+// aktualizuje wpisane wartosci
 void gui_interface::UpdateThumbnailSize(wxCommandEvent& event)
 {
-	
+	folder_hierarchy::max_height = wxAtoi(height->GetValue());
+	folder_hierarchy::max_width = wxAtoi(width->GetValue());
 }
 
+// glowny punkt programu
 void gui_interface::StartOrganizing(wxCommandEvent& event)
 {
 	if (dirDialog->ShowModal() == wxID_OK)
@@ -44,6 +48,7 @@ void gui_interface::StartOrganizing(wxCommandEvent& event)
 	}
 }
 
+// ustawia flage
 void gui_interface::AddContactSheet(wxCommandEvent& event)
 {
 	if (contactSheet->IsChecked())
