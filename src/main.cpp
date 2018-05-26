@@ -1,3 +1,4 @@
+#include <wx/wx.h>
 #include "gui_interface.h"
 #include "wx/wxprec.h"
 	
