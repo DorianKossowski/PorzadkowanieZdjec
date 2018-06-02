@@ -4,7 +4,8 @@
 #include <iostream>
 
 // for handling image
-#include <wx/image.h>
+// for yeld()
+#include <wx/wx.h>
 
 class folder_hierarchy
 {
@@ -13,15 +14,6 @@ public:
 	int numberOfPhotos();
 	// sprawdza czy zdjecie jest odpowiedniego rozszerzenia
 	bool in_array(const std::string &extension);
-	// dokonuje operacji na zdjeciu, kopiuje do lokalizacji docelowej
-	void imageHandler(const std::string& source, const std::string& destination);
-	// tworzy stykowke ze zdjec w danym folderze
-	void createContactSheet(const std::string& place);
-	// tworzy kopie hierarchii folderow w lokalizacji docelowej
-	void copyHierarchy();
-
-	static int max_width;
-	static int max_height;
 
 protected:
 	// sciezka do folderu bazowego
@@ -34,6 +26,12 @@ protected:
 	int photosAmount, statusCounter;
 	// sciezki do zdjec w aktualnym folderze, potrzebne do stykowek
 	std::vector<std::string> photosInFolder;
+	// rozmiary
+	static int max_width;
+	static int max_height;
+	// poziom kompresji
+	static int compressionLevelValue;
 
-	bool contactSheetFlag, automaticMode;
+	bool contactSheetFlag = false;
+	bool automaticMode = true;
 };

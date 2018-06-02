@@ -35,4 +35,21 @@ public:
 	// W trybie polautomatycznym po nacisnieciu buttona rightRotation mozemy obrocic zdjecie o 90 stopni w prawo.
 	virtual void RotateRight(wxCommandEvent& event);
 
+	// updater
+	void UpdateUI(wxUpdateUIEvent& event);
+
+	// odswieza obraz
+	void Repaint_image(wxImage Img);
+
+	// repaint
+	void Repaint();
+	
+	// dokonuje operacji na zdjeciu, kopiuje do lokalizacji docelowej
+	void imageHandler(const std::string& source, const std::string& destination);
+
+	// tworzy kopie hierarchii folderow w lokalizacji docelowej
+	void copyHierarchy();
+
+	// tworzy stykowki ze zdjec w danym folderze
+	void createContactSheet(const std::string& place);
 };
