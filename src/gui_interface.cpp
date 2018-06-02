@@ -40,10 +40,28 @@ void gui_interface::StartOrganizing(wxCommandEvent& event)
 {
 	if (dirDialog->ShowModal() == wxID_OK)
 	{
+		// blokowanie przyciskow
+		dirImport->Enable(false);
+		modeChoice->Enable(false);
+		height->Enable(false);
+		width->Enable(false);
+		compressionLevel->Enable(false);
+		organizePhotos->Enable(false);
+		contactSheet->Enable(false);
+
 		newFolder = dirDialog->GetPath();
 		copyHierarchy();
 		percentageProgress->SetLabel("100 %");
 		showProgress->SetValue(100);
+
+		// odblokowanie przyciskow
+		dirImport->Enable(true);
+		modeChoice->Enable(true);
+		height->Enable(true);
+		width->Enable(true);
+		compressionLevel->Enable(true);
+		organizePhotos->Enable(true);
+		contactSheet->Enable(true);
 	}
 
 	// Sprawdzam tylko czy kontrolka jest pusta, trzeba bedzie dopisac warunek zeby wprowadzona wartosc byla liczba.
