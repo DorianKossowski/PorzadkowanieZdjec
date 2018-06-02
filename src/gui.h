@@ -26,6 +26,7 @@
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/checkbox.h>
+#include <wx/slider.h>
 
 
 
@@ -46,6 +47,8 @@ protected:
 	wxTextCtrl* height;
 	wxStaticText* maxWidth;
 	wxTextCtrl* width;
+	wxSlider* compressionLevel;
+	wxStaticText* compression;
 	wxButton* organizePhotos;
 	wxGauge* showProgress;
 	wxStaticText* percentageProgress;
@@ -62,6 +65,7 @@ protected:
 	virtual void SelectDirectoryToImport(wxCommandEvent& event) { event.Skip(); }
 	virtual void ModeSelect(wxCommandEvent& event) { event.Skip(); }
 	virtual void UpdateThumbnailSize(wxCommandEvent& event) { event.Skip(); }
+	virtual void SetCompressionLevel(wxScrollEvent& event) { event.Skip(); }
 	virtual void StartOrganizing(wxCommandEvent& event) { event.Skip(); }
 	virtual void AddContactSheet(wxCommandEvent& event) { event.Skip(); }
 	virtual void RotateLeft(wxCommandEvent& event) { event.Skip(); }

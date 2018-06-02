@@ -30,6 +30,11 @@ void gui_interface::UpdateThumbnailSize(wxCommandEvent& event)
 	folder_hierarchy::max_width = wxAtoi(width->GetValue());
 }
 
+void gui_interface::SetCompressionLevel(wxScrollEvent& event)
+{
+
+}
+
 // glowny punkt programu
 void gui_interface::StartOrganizing(wxCommandEvent& event)
 {

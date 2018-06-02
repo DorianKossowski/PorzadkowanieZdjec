@@ -16,6 +16,8 @@ public:
 	// Zapisujemy do zmiennych thumbnailHeight i thumbnailWidth wprowadzona przed uzytkownika wysokosc i szerokosc miniaturek.
 	virtual void UpdateThumbnailSize(wxCommandEvent& event);
 
+	virtual void SetCompressionLevel(wxScrollEvent& event);
+
 	// Po wcisnieciu buttona organizePhotos pokawia sie okno do wyboru katalogu do ktorego bedziemy zapisywac katalog
 	// z uporzadkowanymi zdjeciami. Pozniej startujemy z porzadkowaniem zdjec. Jesli uzytkownik nie ustawil stopnia kompesji
 	// pojawia sie ostrzezenie. Na panelu photosPanel bedzie mozna zobaczyc porzadkowane zdjecia. 

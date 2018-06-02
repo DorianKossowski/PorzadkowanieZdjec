@@ -76,6 +76,20 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 
 	leftSizer->Add(dimensionsSizer, 0, wxALIGN_CENTER | wxEXPAND | wxSHAPED, 5);
 
+	wxBoxSizer* compressionSizer;
+	compressionSizer = new wxBoxSizer(wxVERTICAL);
+
+	compressionSizer->SetMinSize(wxSize(350, 100));
+	compressionLevel = new wxSlider(this, wxID_ANY, 0, 0, 100, wxDefaultPosition, wxSize(300, 40), wxSL_HORIZONTAL);
+	compressionSizer->Add(compressionLevel, 0, wxALIGN_CENTER_HORIZONTAL | wxALL | wxSHAPED, 5);
+
+	compression = new wxStaticText(this, wxID_ANY, wxT("poziom kompresji"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	compression->Wrap(-1);
+	compressionSizer->Add(compression, 0, wxALIGN_CENTER_HORIZONTAL | wxALL | wxSHAPED, 5);
+
+
+	leftSizer->Add(compressionSizer, 1, wxALIGN_CENTER | wxEXPAND | wxSHAPED, 5);
+
 	wxBoxSizer* organizeSizer;
 	organizeSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -146,6 +160,15 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	modeChoice->Connect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(MyFrame::ModeSelect), NULL, this);
 	height->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(MyFrame::UpdateThumbnailSize), NULL, this);
 	width->Connect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(MyFrame::UpdateThumbnailSize), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_TOP, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_BOTTOM, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_LINEUP, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_PAGEUP, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
 	organizePhotos->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::StartOrganizing), NULL, this);
 	contactSheet->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(MyFrame::AddContactSheet), NULL, this);
 	leftRotation->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::RotateLeft), NULL, this);
