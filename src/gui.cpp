@@ -180,6 +180,7 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	contactSheet->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(MyFrame::AddContactSheet), NULL, this);
 	leftRotation->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::RotateLeft), NULL, this);
 	rightRotation->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::RotateRight), NULL, this);
+	nextPhoto->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::GoToNextPhoto), NULL, this);
 
 	dirDialog = new wxDirDialog(this, wxT("Wybierz katalog"), wxT(""));
 }
@@ -191,10 +192,19 @@ MyFrame::~MyFrame()
 	modeChoice->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler(MyFrame::ModeSelect), NULL, this);
 	height->Disconnect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(MyFrame::UpdateThumbnailSize), NULL, this);
 	width->Disconnect(wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(MyFrame::UpdateThumbnailSize), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_TOP, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_BOTTOM, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_LINEUP, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_PAGEUP, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
+	compressionLevel->Disconnect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(MyFrame::SetCompressionLevel), NULL, this);
 	organizePhotos->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::StartOrganizing), NULL, this);
 	contactSheet->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(MyFrame::AddContactSheet), NULL, this);
 	leftRotation->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::RotateLeft), NULL, this);
 	rightRotation->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::RotateRight), NULL, this);
-
+	nextPhoto->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::GoToNextPhoto), NULL, this);
 }
 
