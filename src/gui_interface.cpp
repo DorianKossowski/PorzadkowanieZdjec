@@ -90,35 +90,22 @@ void gui_interface::AddContactSheet(wxCommandEvent& event)
 		contactSheetFlag = false;
 }
 
-
-void gui_interface::RotateLeft(wxCommandEvent& event)
-{
-	//sprawdzam czy jestem w trybie polautomatycznym
-	if (modeChoice->GetSelection() == 1)
-	{
-
-	}
+// dziala to tak ze ustawia flage, bo wewnatrz imageHandler jest petla ktora
+// odswieza ekran dopoki sie nie wcisnie next
+// a rotate to tez flagi ktore po prostu obracaja wewnatrz tej petli
+void gui_interface::RotateLeft(wxCommandEvent& event) {
+	left = true;
+}
+// koment wyzej
+void gui_interface::RotateRight(wxCommandEvent& event) {
+	right = true;
+}
+// koment wyzej
+void gui_interface::GoToNextPhoto(wxCommandEvent& event) {
+	next = true;
 }
 
-void gui_interface::RotateRight(wxCommandEvent& event)
-{
-	//sprawdzam czy jestem w trybie polautomatycznym
-	if (modeChoice->GetSelection() == 1)
-	{
-
-	}
-}
-
-void gui_interface::GoToNextPhoto(wxCommandEvent& event)
-{
-
-}
-
-void gui_interface::UpdateUI(wxUpdateUIEvent& event) {
-	Repaint();
-}
-
-void gui_interface::Repaint_image(wxImage Img) {
+void gui_interface::Repaint(wxImage Img) {
 	wxClientDC dc(this);
 	photosPanel->PrepareDC(dc);
 	wxBitmap bitmap(Img);
@@ -129,7 +116,8 @@ void gui_interface::Repaint_image(wxImage Img) {
 
 void gui_interface::Repaint() {
 	showProgress->SetValue(statusCounter * 100 / photosAmount);
-	percentageProgress->SetLabel(std::to_string(statusCounter * 100 / photosAmount) + " %");
+	percentageProgress->SetLabel(std::to_string(statusCounter) + " / " + std::to_string(photosAmount)
+		+ " (" + std::to_string(statusCounter * 100 / photosAmount) + " %)");
 	wxYield();
 }
 
@@ -180,6 +168,7 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 
 	// obraz
 	wxImage image;
+	wxImage baseImage;
 
 	// jakosc
 	wxImageResizeQuality quality;
@@ -190,15 +179,19 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 	else if (compressionLevelValue >= 66)
 		quality = wxIMAGE_QUALITY_BICUBIC;
 
-	if (image.LoadFile(source)) {
+	// stosunek
+	double ratio;
+
+	if (baseImage.LoadFile(source)) {
+		image = baseImage.Copy();
 		// obraz musi miec wymiary
 		if (image.GetWidth() > 0 && image.GetHeight() > 0) {
 			// obraz jest wertykalny (wyzszy niz szerszy)
 			if (image.GetHeight() > image.GetWidth()) {
 				// wspolczynnik 
-				double ratio = static_cast<double> (image.GetWidth()) / static_cast<double> (image.GetHeight());
+				ratio = static_cast<double> (image.GetWidth()) / static_cast<double> (image.GetHeight());
 				// rysuje sobie
-				Repaint_image(image.Scale(512 * ratio, 512));
+				Repaint(baseImage.Scale(512 * ratio, 512));
 				// najpierw sprawdzam czy mam wgl wymiary
 				if (max_width > 0 && max_height > 0) {
 					// nie wiem jak to opisac XD
@@ -219,7 +212,7 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 				// wspolczynnik
 				double ratio = static_cast<double> (image.GetHeight()) / static_cast<double> (image.GetWidth());
 				// rysuje sobie
-				Repaint_image(image.Scale(512, 512 * ratio));
+				Repaint(image.Scale(512, 512 * ratio));
 				// najpierw sprawdzam czy mam wgl wymiary
 				if (max_width > 0 && max_height > 0) {
 					// nie wiem jak to opisac XD
@@ -248,6 +241,34 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 				image.SaveFile(destination);
 				std::cout << "NUMBER: " << ++statusCounter << std::endl;
 			}
+		}
+		else {
+			while (!next) {
+				if (right) {
+					baseImage = baseImage.Rotate90();
+					image = image.Rotate90();
+					// odswiez ekran
+					if (baseImage.GetWidth() > baseImage.GetHeight())
+						Repaint(baseImage.Scale(512, 512 * ratio));
+					else
+						Repaint(baseImage.Scale(512 * ratio, 512));
+				}
+				else if (left) {
+					baseImage = baseImage.Rotate90(false);
+					image = image.Rotate90(false);
+					// odswiez ekran
+					if (baseImage.GetWidth() > baseImage.GetHeight())
+						Repaint(baseImage.Scale(512, 512 * ratio));
+					else
+						Repaint(baseImage.Scale(512 * ratio, 512));
+				}
+				right = false;
+				left = false;
+				wxYield();
+			}
+			next = false;
+			image.SaveFile(destination);
+			std::cout << "NUMBER: " << ++statusCounter << std::endl;
 		}
 	}
 	catch (fs::filesystem_error& e) {

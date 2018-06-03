@@ -23,7 +23,7 @@ protected:
 	// dopuszczalne formaty zdjec
 	std::vector<std::string> validExtensions{ ".jpg", ".jpeg", ".jpe", ".jfif", ".bmp", ".JPG", ".JPEG" };
 	// ilosc wszyskich zdjec, ilosc juz obrobionych zdjec
-	int photosAmount, statusCounter;
+	int photosAmount = 0, statusCounter = 0;
 	// sciezki do zdjec w aktualnym folderze, potrzebne do stykowek
 	std::vector<std::string> photosInFolder;
 	// rozmiary
@@ -34,4 +34,9 @@ protected:
 
 	bool contactSheetFlag = false;
 	bool automaticMode = true;
+
+	// testowy bool do przechodzenia
+	bool next = false;
+	bool right = false;
+	bool left = false;
 };

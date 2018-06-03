@@ -1,8 +1,8 @@
 #include "folder_hierarchy.h"
 
+// ustawienie wartosci domyslnych
 int folder_hierarchy::max_width = 64;
 int folder_hierarchy::max_height = 64;
-
 int folder_hierarchy::compressionLevelValue = 0;
 
 namespace fs = std::experimental::filesystem;
