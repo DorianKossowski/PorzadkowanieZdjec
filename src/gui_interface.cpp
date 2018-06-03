@@ -18,7 +18,12 @@ void gui_interface::SelectDirectoryToImport(wxCommandEvent& event)
 void gui_interface::ModeSelect(wxCommandEvent& event)
 {
 	if (modeChoice->GetSelection() == 0)
+	{
 		automaticMode = true;
+		leftRotation->Enable(false);
+		rightRotation->Enable(false);
+		nextPhoto->Enable(false);
+	}
 	else
 	{
 		automaticMode = false;
