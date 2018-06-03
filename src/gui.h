@@ -53,7 +53,7 @@ protected:
 	wxGauge* showProgress;
 	wxStaticText* percentageProgress;
 	wxCheckBox* contactSheet;
-	wxPanel* photosPanel;
+	//wxPanel* photosPanel;
 	wxButton* leftRotation;
 	wxButton* rightRotation;
 	wxButton* nextPhoto;

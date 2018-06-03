@@ -44,6 +44,9 @@ public:
 	// odswieza obraz
 	void Repaint();
 	
+	// taki bajer ;)
+	void Repaint_done();
+
 	// dokonuje operacji na zdjeciu, kopiuje do lokalizacji docelowej
 	void imageHandler(const std::string& source, const std::string& destination);
 

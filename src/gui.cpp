@@ -83,7 +83,7 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	compressionLevel = new wxSlider(this, wxID_ANY, 0, 0, 100, wxDefaultPosition, wxSize(300, 40), wxSL_HORIZONTAL);
 	compressionSizer->Add(compressionLevel, 0, wxALIGN_CENTER_HORIZONTAL | wxALL | wxSHAPED, 5);
 
-	compression = new wxStaticText(this, wxID_ANY, wxT("poziom kompresji"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	compression = new wxStaticText(this, wxID_ANY, wxT("poziom kompresji (100 %)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	compression->Wrap(-1);
 	compressionSizer->Add(compression, 0, wxALIGN_CENTER_HORIZONTAL | wxALL | wxSHAPED, 5);
 
@@ -129,11 +129,11 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	wxBoxSizer* rightSizer;
 	rightSizer = new wxBoxSizer(wxVERTICAL);
 
-	photosPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	photosPanel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
-	photosPanel->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+	//photosPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	//photosPanel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
+	//photosPanel->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
 
-	rightSizer->Add(photosPanel, 1, wxEXPAND | wxALL, 5);
+	//rightSizer->Add(photosPanel, 1, wxEXPAND | wxALL, 5);
 
 	wxBoxSizer* rotationSizer;
 	rotationSizer = new wxBoxSizer(wxHORIZONTAL);

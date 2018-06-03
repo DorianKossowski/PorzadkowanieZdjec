@@ -43,6 +43,7 @@ void gui_interface::UpdateThumbnailSize(wxCommandEvent& event)
 // ustawia poziom kompresji
 void gui_interface::SetCompressionLevel(wxScrollEvent& event) {
 	compressionLevelValue = compressionLevel->GetValue();
+	compression->SetLabel("poziom kompresji (" + std::to_string(100 - compressionLevelValue) + " %)");
 }
 
 // glowny punkt programu
@@ -52,7 +53,7 @@ void gui_interface::StartOrganizing(wxCommandEvent& event)
 	{
 		// Sprawdzam tylko czy kontrolka jest pusta, trzeba bedzie dopisac warunek zeby wprowadzona wartosc byla liczba.
 		if (width->GetValue() == "" && height->GetValue() == "") {
-			wxMessageDialog(NULL, "Wprowad\u017A stopie\u0144 kompresji!", "Uwaga!", wxOK).ShowModal();
+			wxMessageDialog(NULL, "Wprowad\u017A przynajmniej jeden wymiar!", "Uwaga!", wxOK).ShowModal();
 		}
 		else {
 			// blokowanie przyciskow
@@ -78,6 +79,7 @@ void gui_interface::StartOrganizing(wxCommandEvent& event)
 			organizePhotos->Enable(true);
 			contactSheet->Enable(true);
 		}
+		Repaint_done();
 	}
 }
 
@@ -107,10 +109,9 @@ void gui_interface::GoToNextPhoto(wxCommandEvent& event) {
 
 void gui_interface::Repaint(wxImage Img) {
 	wxClientDC dc(this);
-	photosPanel->PrepareDC(dc);
 	wxBitmap bitmap(Img);
 	dc.Clear();
-	dc.DrawBitmap(bitmap, 0, 0);
+	dc.DrawBitmap(bitmap, 450, 50);
 	Repaint();
 }
 
@@ -121,10 +122,20 @@ void gui_interface::Repaint() {
 	wxYield();
 }
 
+void gui_interface::Repaint_done() {
+	wxClientDC dc(this);
+	dc.Clear();
+	dc.DrawText("© 2018 credits:", 550, 100);
+	dc.DrawText("Gabriela Miedlar", 500, 200);
+	dc.DrawText("Dorian Kossowski", 500, 225);
+	dc.DrawText("Piotr Kolecki", 500, 250);
+}
+
 void gui_interface::copyHierarchy()
 {
 	// handlery
 	wxInitAllImageHandlers();
+	statusCounter = 0;
 
 	for (auto& p : fs::directory_iterator(baseFolder))
 	{
@@ -170,6 +181,9 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 	wxImage image;
 	wxImage baseImage;
 
+	// rozmiar wyswietlanego podgladu
+	int preview_size = 450;
+	
 	// jakosc
 	wxImageResizeQuality quality;
 	if (compressionLevelValue <= 33)
@@ -180,7 +194,7 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 		quality = wxIMAGE_QUALITY_BICUBIC;
 
 	// stosunek
-	double ratio;
+	double ratio = 1;
 
 	if (baseImage.LoadFile(source)) {
 		image = baseImage.Copy();
@@ -191,7 +205,7 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 				// wspolczynnik 
 				ratio = static_cast<double> (image.GetWidth()) / static_cast<double> (image.GetHeight());
 				// rysuje sobie
-				Repaint(baseImage.Scale(512 * ratio, 512));
+				Repaint(baseImage.Scale(preview_size * ratio, preview_size));
 				// najpierw sprawdzam czy mam wgl wymiary
 				if (max_width > 0 && max_height > 0) {
 					// nie wiem jak to opisac XD
@@ -210,9 +224,9 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 			// obraz jest horyzontalny
 			else {
 				// wspolczynnik
-				double ratio = static_cast<double> (image.GetHeight()) / static_cast<double> (image.GetWidth());
+				ratio = static_cast<double> (image.GetHeight()) / static_cast<double> (image.GetWidth());
 				// rysuje sobie
-				Repaint(image.Scale(512, 512 * ratio));
+				Repaint(image.Scale(preview_size, preview_size * ratio));
 				// najpierw sprawdzam czy mam wgl wymiary
 				if (max_width > 0 && max_height > 0) {
 					// nie wiem jak to opisac XD
@@ -249,26 +263,30 @@ void gui_interface::imageHandler(const std::string& source, const std::string& d
 					image = image.Rotate90();
 					// odswiez ekran
 					if (baseImage.GetWidth() > baseImage.GetHeight())
-						Repaint(baseImage.Scale(512, 512 * ratio));
+						Repaint(baseImage.Scale(preview_size, preview_size * ratio));
 					else
-						Repaint(baseImage.Scale(512 * ratio, 512));
+						Repaint(baseImage.Scale(preview_size * ratio, preview_size));
 				}
 				else if (left) {
 					baseImage = baseImage.Rotate90(false);
 					image = image.Rotate90(false);
 					// odswiez ekran
 					if (baseImage.GetWidth() > baseImage.GetHeight())
-						Repaint(baseImage.Scale(512, 512 * ratio));
+						Repaint(baseImage.Scale(preview_size, preview_size * ratio));
 					else
-						Repaint(baseImage.Scale(512 * ratio, 512));
+						Repaint(baseImage.Scale(preview_size * ratio, preview_size));
 				}
 				right = false;
 				left = false;
 				wxYield();
 			}
 			next = false;
-			image.SaveFile(destination);
-			std::cout << "NUMBER: " << ++statusCounter << std::endl;
+			// obraz musi miec wymiary
+			if (image.GetWidth() > 0 && image.GetHeight() > 0) {
+				// zapis do pliku
+				image.SaveFile(destination);
+				std::cout << "NUMBER: " << ++statusCounter << std::endl;
+			}
 		}
 	}
 	catch (fs::filesystem_error& e) {
@@ -296,19 +314,31 @@ void gui_interface::createContactSheet(const std::string& place)
 	for (int j = 0; j < photosInFolder.size(); j++) {
 		// wypisanie ladne ze sie robi
 		if (step == 0) {
-			percentageProgress->SetLabel("creating contact sheet");
+			percentageProgress->SetLabel(
+				"(" + std::to_string(j) + " / " +
+				std::to_string(photosInFolder.size()) + ") " +
+				"creating contact sheet");
 			step++;
 		}
 		else if (step == 1) {
-			percentageProgress->SetLabel("creating contact sheet.");
+			percentageProgress->SetLabel(
+				"(" + std::to_string(j) + " / " +
+				std::to_string(photosInFolder.size()) + ") " +
+				"creating contact sheet.");
 			step++;
 		}
 		else if (step == 2) {
-			percentageProgress->SetLabel("creating contact sheet..");
+			percentageProgress->SetLabel(
+				"(" + std::to_string(j) + " / " +
+				std::to_string(photosInFolder.size()) + ") " +
+				"creating contact sheet..");
 			step++;
 		}
 		else if (step == 3) {
-			percentageProgress->SetLabel("creating contact sheet...");
+			percentageProgress->SetLabel(
+				"(" + std::to_string(j) + " / " +
+				std::to_string(photosInFolder.size()) + ") " +
+				"creating contact sheet...");
 			step = 0;
 		}
 		// zeby odswiezyc obraz
