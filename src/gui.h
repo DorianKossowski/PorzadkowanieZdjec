@@ -27,7 +27,7 @@
 #include <wx/msgdlg.h>
 #include <wx/checkbox.h>
 #include <wx/slider.h>
-
+#include <wx/valnum.h>
 
 
 ///////////////////////////////////////////////////////////////////////////

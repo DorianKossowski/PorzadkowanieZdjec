@@ -54,7 +54,10 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	maxHeight->Wrap(-1);
 	heightSizer->Add(maxHeight, 0, wxALL, 5);
 
-	height = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	wxFloatingPointValidator<double> _val(2, nullptr, wxNUM_VAL_ZERO_AS_BLANK);
+	_val.SetRange(0., 1000.);
+
+	height = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _val);
 	heightSizer->Add(height, 0, wxALL, 5);
 
 
@@ -67,7 +70,7 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	maxWidth->Wrap(-1);
 	bSizer12->Add(maxWidth, 0, wxALL, 5);
 
-	width = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	width = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _val);
 	bSizer12->Add(width, 0, wxALL, 5);
 
 
