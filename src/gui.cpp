@@ -139,11 +139,18 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	rotationSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	leftRotation = new wxButton(this, wxID_ANY, wxT("Obr\u00F3t w lewo o 90\u2070"), wxDefaultPosition, wxDefaultSize, 0);
+	leftRotation->Enable(false);
 	rotationSizer->Add(leftRotation, 0, wxALIGN_CENTER | wxALL, 5);
 
 	rightRotation = new wxButton(this, wxID_ANY, wxT("Obr\u00F3t w prawo o 90\u2070"), wxDefaultPosition, wxDefaultSize, 0);
+	rightRotation->Enable(false);
 	rotationSizer->Add(rightRotation, 0, wxALIGN_CENTER | wxALL, 5);
 
+	nextPhoto = new wxButton(this, wxID_ANY, wxT("-->"), wxDefaultPosition, wxDefaultSize, 0);
+	nextPhoto->Enable(false);
+	nextPhoto->SetMinSize(wxSize(50, -1));
+
+	rotationSizer->Add(nextPhoto, 0, wxALIGN_CENTER | wxALL, 5);
 
 	rightSizer->Add(rotationSizer, 0, wxALIGN_CENTER | wxEXPAND | wxSHAPED, 5);
 

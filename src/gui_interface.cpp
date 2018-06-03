@@ -20,7 +20,12 @@ void gui_interface::ModeSelect(wxCommandEvent& event)
 	if (modeChoice->GetSelection() == 0)
 		automaticMode = true;
 	else
+	{
 		automaticMode = false;
+		leftRotation->Enable(true);
+		rightRotation->Enable(true);
+		nextPhoto->Enable(true);
+	}
 }
 
 // aktualizuje wpisane wartosci
@@ -97,6 +102,11 @@ void gui_interface::RotateRight(wxCommandEvent& event)
 	{
 
 	}
+}
+
+void gui_interface::GoToNextPhoto(wxCommandEvent& event)
+{
+
 }
 
 void gui_interface::UpdateUI(wxUpdateUIEvent& event) {

@@ -56,6 +56,7 @@ protected:
 	wxPanel* photosPanel;
 	wxButton* leftRotation;
 	wxButton* rightRotation;
+	wxButton* nextPhoto;
 	wxDirDialog* dirDialog;
 	double thumbnailHeight;
 	double thumbnailWidth;
@@ -70,6 +71,7 @@ protected:
 	virtual void AddContactSheet(wxCommandEvent& event) { event.Skip(); }
 	virtual void RotateLeft(wxCommandEvent& event) { event.Skip(); }
 	virtual void RotateRight(wxCommandEvent& event) { event.Skip(); }
+	virtual void GoToNextPhoto(wxCommandEvent& event) { event.Skip(); }
 
 
 public:

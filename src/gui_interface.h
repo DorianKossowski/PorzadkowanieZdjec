@@ -35,6 +35,8 @@ public:
 	// W trybie polautomatycznym po nacisnieciu buttona rightRotation mozemy obrocic zdjecie o 90 stopni w prawo.
 	virtual void RotateRight(wxCommandEvent& event);
 
+	virtual void GoToNextPhoto(wxCommandEvent& event);
+
 	// updater
 	void UpdateUI(wxUpdateUIEvent& event);
 
