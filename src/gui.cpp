@@ -132,12 +132,6 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	wxBoxSizer* rightSizer;
 	rightSizer = new wxBoxSizer(wxVERTICAL);
 
-	//photosPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	//photosPanel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
-	//photosPanel->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
-
-	//rightSizer->Add(photosPanel, 1, wxEXPAND | wxALL, 5);
-
 	wxBoxSizer* rotationSizer;
 	rotationSizer = new wxBoxSizer(wxHORIZONTAL);
 

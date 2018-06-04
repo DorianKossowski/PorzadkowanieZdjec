@@ -11,6 +11,10 @@ void gui_interface::SelectDirectoryToImport(wxCommandEvent& event)
 		statusCounter = 0;
 		percentageProgress->SetLabel("0 %");
 		showProgress->SetValue(0);
+
+		wxClientDC dc(this);
+		dc.Clear();
+		dc.DrawText(baseFolder, 100, 40);
 	}
 }
 
@@ -111,6 +115,7 @@ void gui_interface::Repaint(wxImage Img) {
 	wxClientDC dc(this);
 	wxBitmap bitmap(Img);
 	dc.Clear();
+	dc.DrawText(baseFolder, 100, 40);
 	dc.DrawBitmap(bitmap, 450, 50);
 	Repaint();
 }
@@ -125,6 +130,7 @@ void gui_interface::Repaint() {
 void gui_interface::Repaint_done() {
 	wxClientDC dc(this);
 	dc.Clear();
+	dc.DrawText(baseFolder, 100, 40);
 	dc.DrawText("© 2018 credits:", 550, 100);
 	dc.DrawText("Gabriela Miedlar", 500, 200);
 	dc.DrawText("Dorian Kossowski", 500, 225);
