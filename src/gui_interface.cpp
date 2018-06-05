@@ -55,11 +55,12 @@ void gui_interface::StartOrganizing(wxCommandEvent& event)
 {
 	if (dirDialog->ShowModal() == wxID_OK)
 	{
-		// Sprawdzam tylko czy kontrolka jest pusta, trzeba bedzie dopisac warunek zeby wprowadzona wartosc byla liczba.
-		if (width->GetValue() == "" && height->GetValue() == "") {
+		if (width->GetValue() == "" && height->GetValue() == "") 
+		{
 			wxMessageDialog(NULL, "Wprowad\u017A przynajmniej jeden wymiar!", "Uwaga!", wxOK).ShowModal();
 		}
-		else {
+		else 
+		{
 			// blokowanie przyciskow
 			dirImport->Enable(false);
 			modeChoice->Enable(false);

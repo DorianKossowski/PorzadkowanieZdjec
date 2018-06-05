@@ -54,8 +54,8 @@ MyFrame::MyFrame(wxWindow* parent, wxWindowID id, const wxString& title, const w
 	maxHeight->Wrap(-1);
 	heightSizer->Add(maxHeight, 0, wxALL, 5);
 
-	wxFloatingPointValidator<double> _val(2, nullptr, wxNUM_VAL_ZERO_AS_BLANK);
-	_val.SetRange(0., 1920.);
+	wxFloatingPointValidator<int> _val(0, nullptr, wxNUM_VAL_ZERO_AS_BLANK);
+	_val.SetRange(0, 1920);
 
 	height = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _val);
 	heightSizer->Add(height, 0, wxALL, 5);
